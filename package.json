@@ -12,7 +12,7 @@
     "build-app": "npx webpack -p --env production",
     "build": "npm run build-app && npm run build-server",
     "postinstall": "npm run build",
-    "start": "babel-node dist/bin/slack.js",
+    "start": "babel-node dist/bin/slack.js"
   },
   "repository": {
     "type": "git",
