@@ -1,39 +1,49 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import cn from 'classnames';
+import connect from '../connect';
+import UserContext from '../UserContext';
 
 const mapStateToProps = (state) => {
-  const { channels: { allIds, byId } } = state;
+  const { channels: { allIds, byId, currentChannelId } } = state;
   const channels = allIds.map(id => byId[id]);
-  return { channels };
+  return { channels, currentChannelId };
 };
 
+@connect(mapStateToProps)
 class Channels extends React.Component {
-  handleClick = () => {
-
-  };
-
   render() {
-    const { channels } = this.props;
+    const { channels, currentChannelId } = this.props;
 
     if (channels.length === 0) {
       return null;
     }
 
     return (
-      <div className="mt-3">
-        <ul className="list-group">
-          {channels.map(({ id, name }) => (
-            <li key={id} className="list-group-item d-flex">
-              <span className="mr-auto">{name}</span>
-              <button type="button" className="close" onClick={this.handleClick}>
-                <span>&times;</span>
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <UserContext.Consumer>
+        {userName => (
+          <div className="mt-3">
+            <p>{userName}</p>
+            <ul className="list-group">
+              {channels.map(({ id, name }) => {
+                const liClass = cn({
+                  'list-group-item d-flex': true,
+                  active: id === currentChannelId,
+                });
+                return (
+                  <li key={id} className={liClass}>
+                    <span className="mr-auto">{name}</span>
+                    <button type="button" className="close">
+                      <span>&times;</span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        )}
+      </UserContext.Consumer>
     );
   }
 }
 
-export default connect(mapStateToProps)(Channels);
+export default Channels;
