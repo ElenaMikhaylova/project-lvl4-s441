@@ -1,5 +1,6 @@
 import React from 'react';
 import connect from '../connect';
+import AutoscrolledList from './AutoscrolledList';
 
 const mapStateToProps = (state) => {
   const { messagesFetchingState, messages } = state;
@@ -7,7 +8,7 @@ const mapStateToProps = (state) => {
 };
 
 @connect(mapStateToProps)
-class Messages extends React.Component {
+class MessageList extends React.Component {
   render() {
     const { messages, messagesFetchingState } = this.props;
     if (messagesFetchingState === 'requested') {
@@ -23,24 +24,10 @@ class Messages extends React.Component {
       );
     }
 
-    if (messages.length === 0) {
-      return null;
-    }
     return (
-      <div className="mt-3">
-        <ul className="list-group">
-          {messages.map(({ id, text, userName }) => (
-            <li className="list-group-item d-flex" key={id}>
-              <div>
-                <dt>{userName}</dt>
-                <dd>{text}</dd>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <AutoscrolledList messages={messages} />
     );
   }
 }
 
-export default Messages;
+export default MessageList;

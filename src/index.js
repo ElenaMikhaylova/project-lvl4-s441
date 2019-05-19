@@ -21,11 +21,26 @@ const userName = cookieName || cookies.get('username');
 const { channels, messages, currentChannelId } = gon;
 const allIds = channels.map(channel => channel.id);
 const byId = _.zipObject(allIds, channels);
-const initState = { channels: { byId, allIds, currentChannelId }, messages };
+const initState = {
+  channels: { byId, allIds, currentChannelId },
+  messages: messages.filter(message => message.channelId === currentChannelId),
+};
 
 const store = init(initState, userName);
 const socket = io();
 
 socket.on('newMessage', ({ data }) => {
   store.dispatch(actions.addMessageSuccess(data.attributes));
+});
+
+socket.on('newChannel', ({ data }) => {
+  store.dispatch(actions.addChannelSuccess(data.attributes));
+});
+
+socket.on('removeChannel', ({ data }) => {
+  store.dispatch(actions.removeChannelSuccess(data.id));
+});
+
+socket.on('renameChannel', ({ data }) => {
+  store.dispatch(actions.updateChannelSuccess(data.attributes));
 });
