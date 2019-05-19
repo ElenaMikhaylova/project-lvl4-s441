@@ -14,12 +14,11 @@ const channels = handleActions({
     };
   },
   [actions.removeChannelSuccess](state, { payload: id }) {
-    const { byId, allIds, currentChannelId } = state;
+    const { byId, allIds } = state;
     return {
       ...state,
       allIds: allIds.filter(channelId => channelId !== id),
       byId: _.omit(byId, id),
-      currentChannelId: currentChannelId === id ? allIds[0] : currentChannelId,
     };
   },
   [actions.updateChannelSuccess](state, { payload: channel }) {
@@ -29,34 +28,30 @@ const channels = handleActions({
       byId: { ...byId, [channel.id]: channel },
     };
   },
-  [actions.toggleChannel](state, { payload: { currentChannelId } }) {
-    return { ...state, currentChannelId };
-  },
-}, { byId: {}, allIds: [], currentChannelId: 0 });
-
-const channelsRemovingState = handleActions({
-  [actions.removeChannelRequest]() {
-    return 'requested';
-  },
-  [actions.removeChannelFailure]() {
-    return 'failed';
-  },
-  [actions.removeChannelSuccess]() {
-    return 'finished';
-  },
-}, 'none');
+}, { byId: {}, allIds: [] });
 
 const channelsUIstate = handleActions({
-  [actions.openModalUpdateChannel](state, { payload: { id } }) {
-    return { ...state, [id]: { state: 'updating' } };
+  [actions.fetchMessagesSuccess](state, { payload: { currentChannelId } }) {
+    return { ...state, currentChannelId };
   },
-  [actions.openModalRemoveChannel](state, { payload: { id } }) {
-    return { ...state, [id]: { state: 'removing' } };
+  [actions.removeChannelSuccess](state, { payload: id }) {
+    const { currentChannelId } = state;
+    return {
+      ...state,
+      modal: {},
+      currentChannelId: currentChannelId === id ? 1 : currentChannelId,
+    };
   },
-  [actions.closeModal]() {
-    return {};
+  [actions.openModal](state, { payload: { id, modalState } }) {
+    return { ...state, modal: { id, modalState } };
   },
-}, {});
+  [actions.closeModal](state) {
+    return { ...state, modal: {} };
+  },
+  [actions.updateChannelSuccess](state) {
+    return { ...state, modal: {} };
+  },
+}, { currentChannelId: 1, modal: {} });
 
 const messages = handleActions({
   [actions.addMessageSuccess](state, { payload: message }) {
@@ -85,7 +80,6 @@ const messagesFetchingState = handleActions({
 export default combineReducers({
   form: formReducer,
   channels,
-  channelsRemovingState,
   channelsUIstate,
   messages,
   messagesFetchingState,
