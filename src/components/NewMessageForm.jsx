@@ -54,9 +54,8 @@ class NewMessageForm extends React.Component {
       height: '40px',
     };
     return (
-
       <form className="form-inline mt-3" style={formStyle} onSubmit={handleSubmit(this.addMessage)}>
-        <div className="form-group mx-3">
+        <div className="form-group">
           <Field
             name="text"
             component="input"
@@ -64,7 +63,6 @@ class NewMessageForm extends React.Component {
             disabled={submitting}
             className="form-control"
             placeholder={`Message #${currentChannelName}`}
-            width="100%"
             forwardRef
             ref={this.text}
           />
@@ -72,7 +70,6 @@ class NewMessageForm extends React.Component {
         <button type="submit" className="btn btn-primary btn-sm" disabled={pristine || submitting}>Send</button>
         {error && <div className="ml-3">{error}</div>}
       </form>
-
     );
   }
 }

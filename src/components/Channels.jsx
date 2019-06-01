@@ -56,7 +56,7 @@ class Channels extends React.Component {
     return (
       <div className="mt-3">
         <Nav
-          className="flex-column"
+          className="flex-column border"
           variant="pills"
           activeKey={currentChannelId}
           onSelect={selectedKey => this.handleClickChannel(selectedKey)}

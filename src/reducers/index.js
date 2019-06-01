@@ -34,12 +34,11 @@ const channelsUIstate = handleActions({
   [actions.fetchMessagesSuccess](state, { payload: { currentChannelId } }) {
     return { ...state, currentChannelId };
   },
-  [actions.removeChannelSuccess](state, { payload: id }) {
-    const { currentChannelId } = state;
+  [actions.removeChannelSuccess](state) {
     return {
       ...state,
       modal: {},
-      currentChannelId: currentChannelId === id ? 1 : currentChannelId,
+      currentChannelId: 1,
     };
   },
   [actions.openModal](state, { payload: { id, modalState } }) {

@@ -7,12 +7,12 @@ import UserInfo from './UserInfo';
 
 const App = () => (
   <div className="row">
-    <div className="col-3">
+    <div className="col">
       <UserInfo />
       <Channels />
       <NewChannelForm />
     </div>
-    <div className="col-9">
+    <div className="col-10">
       <Messages />
       <NewMessageForm />
     </div>

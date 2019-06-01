@@ -12,7 +12,7 @@ class List extends React.Component {
     const { messages } = this.props;
 
     return (
-      <ul className="list-group mt-3" style={listStyle} {...this.props}>
+      <ul className="list-group border" style={listStyle} {...this.props}>
         {messages.map(({ id, text, userName }) => (
           <li className="list-group-item d-flex" key={id}>
             <div>
