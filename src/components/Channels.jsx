@@ -1,9 +1,11 @@
 import React from 'react';
-import cn from 'classnames';
+import { Nav } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import connect from '../connect';
-import UserContext from '../UserContext';
 import ModalUpdateChannel from './ModalUpdateChannel';
 import ModalRemoveChannel from './ModalRemoveChannel';
+
 
 const mapStateToProps = (state) => {
   const {
@@ -20,17 +22,19 @@ const mapStateToProps = (state) => {
 
 @connect(mapStateToProps)
 class Channels extends React.Component {
-  handleClickChannel = id => () => {
+  handleClickChannel = (id) => {
     const { fetchMessages } = this.props;
     fetchMessages({ id });
   };
 
-  handleClickUpdateBtn = id => () => {
+  handleClickUpdateBtn = id => (e) => {
+    e.stopPropagation();
     const { openModal } = this.props;
     openModal({ id, modalState: 'updating' });
   };
 
-  handleClickRemoveBtn = id => () => {
+  handleClickRemoveBtn = id => (e) => {
+    e.stopPropagation();
     const { openModal } = this.props;
     openModal({ id, modalState: 'removing' });
   };
@@ -50,36 +54,30 @@ class Channels extends React.Component {
     const showModalRemovingChannel = modal && modal.modalState === 'removing';
 
     return (
-      <UserContext.Consumer>
-        {userName => (
-          <div className="mt-3">
-            <h5>{userName}</h5>
-            <ul className="nav navbar-nav nav-pills">
-              {channels.map(({ id, name, removable }) => {
-                const activeClass = cn({
-                  'nav-item nav-link': true,
-                  active: id === currentChannelId,
-                });
-                return (
-                  <li key={id} className={activeClass}>
-                    <button type="button" className="btn btn-sm" onClick={this.handleClickChannel(id)}>
-                      <span>{`# ${name}`}</span>
-                    </button>
-                    <button type="button" disabled={!removable} className="close" onClick={this.handleClickRemoveBtn(id)}>
-                      <span>&times;</span>
-                    </button>
-                    <button type="button" className="close" onClick={this.handleClickUpdateBtn(id)}>
-                      <span>&hellip;</span>
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-            {showModalUpdatingChannel && <ModalUpdateChannel />}
-            {showModalRemovingChannel && <ModalRemoveChannel />}
-          </div>
-        )}
-      </UserContext.Consumer>
+      <div className="mt-3">
+        <Nav
+          className="flex-column"
+          variant="pills"
+          activeKey={currentChannelId}
+          onSelect={selectedKey => this.handleClickChannel(selectedKey)}
+        >
+          {channels.map(({ id, name, removable }) => (
+            <Nav.Item key={id}>
+              <Nav.Link eventKey={id}>
+                {`# ${name}`}
+                <button type="button" className="close ml-2" disabled={!removable} onClick={this.handleClickRemoveBtn(id)}>
+                  <FontAwesomeIcon icon={faTrashAlt} size="xs" />
+                </button>
+                <button type="button" className="close" onClick={this.handleClickUpdateBtn(id)}>
+                  <FontAwesomeIcon icon={faEdit} size="xs" />
+                </button>
+              </Nav.Link>
+            </Nav.Item>
+          ))}
+        </Nav>
+        {showModalUpdatingChannel && <ModalUpdateChannel />}
+        {showModalRemovingChannel && <ModalRemoveChannel />}
+      </div>
     );
   }
 }

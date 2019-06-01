@@ -6,9 +6,8 @@ export const addChannelSuccess = createAction('CHANNEL_ADD_SUCCESS');
 
 export const addChannel = ({ name }) => async () => {
   const url = routes.channelsUrl();
-  const data = JSON.stringify({ data: { attributes: { name } } });
-  const config = { headers: { 'Content-Type': 'application/vnd.api+json' } };
-  await axios.post(url, data, config);
+  const data = { attributes: { name } };
+  await axios.post(url, { data });
 };
 
 export const removeChannelSuccess = createAction('CHANNEL_REMOVE_SUCCESS');
@@ -23,18 +22,16 @@ export const updateChannelSuccess = createAction('CHANNEL_UPDATE_SUCCESS');
 export const updateChannel = (id, values) => async () => {
   const { name } = values;
   const url = routes.channelUrl(id);
-  const data = JSON.stringify({ data: { attributes: { name } } });
-  const config = { headers: { 'Content-Type': 'application/vnd.api+json' } };
-  await axios.patch(url, data, config);
+  const data = { attributes: { name } };
+  await axios.patch(url, { data });
 };
 
 export const addMessageSuccess = createAction('MESSAGES_ADD_SUCCESS');
 
 export const addMessage = ({ message, currentChannelId }) => async () => {
   const url = routes.messagesUrl(currentChannelId);
-  const data = JSON.stringify({ data: { attributes: message } });
-  const config = { headers: { 'Content-Type': 'application/vnd.api+json' } };
-  await axios.post(url, data, config);
+  const data = { attributes: message };
+  await axios.post(url, { data });
 };
 
 export const fetchMessagesRequest = createAction('MESSAGES_FETCH_REQUEST');

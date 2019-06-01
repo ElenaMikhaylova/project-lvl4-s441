@@ -3,10 +3,12 @@ import Channels from './Channels';
 import Messages from './Messages';
 import NewMessageForm from './NewMessageForm';
 import NewChannelForm from './NewChannelForm';
+import UserInfo from './UserInfo';
 
 const App = () => (
   <div className="row">
     <div className="col-3">
+      <UserInfo />
       <Channels />
       <NewChannelForm />
     </div>

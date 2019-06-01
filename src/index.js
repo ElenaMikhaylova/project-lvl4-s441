@@ -22,8 +22,9 @@ const { channels, messages, currentChannelId } = gon;
 const allIds = channels.map(channel => channel.id);
 const byId = _.zipObject(allIds, channels);
 const initState = {
-  channels: { byId, allIds, currentChannelId },
+  channels: { byId, allIds },
   messages: messages.filter(message => message.channelId === currentChannelId),
+  channelsUIstate: { currentChannelId },
 };
 
 const store = init(initState, userName);
