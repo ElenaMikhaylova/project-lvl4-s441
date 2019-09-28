@@ -38,7 +38,11 @@
     "@fortawesome/free-solid-svg-icons": "^5.8.2",
     "@fortawesome/react-fontawesome": "^0.1.4",
     "autoscroll-react": "^3.2.0",
+<<<<<<< HEAD
     "axios": "^0.19.0",
+=======
+    "axios": "^0.18.1",
+>>>>>>> d5518baaacc2961ec350e86da1d0aca5a4acf26b
     "babel-loader": "^8.0.4",
     "bootstrap": "^4.3.1",
     "classnames": "^2.2.6",
